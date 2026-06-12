@@ -1,0 +1,11 @@
+fileVersion: 1
+id: "70"
+mappingDefinitions:
+  DA_TEST:
+    database: DBSHIFT
+    schema: DBSHIFT
+  TARGET:
+    database: DBSHIFT
+    schema: DA_TEST_TGT
+name: New Environment
+type: Environment
