@@ -1,0 +1,131 @@
+fileVersion: 1
+id: 5e7e4257-6cc7-4d5c-af63-f8d5bae6d682
+name: STG_SNAPSHOT_CUSTOMERS
+operation:
+  config:
+    insertStrategy: INSERT
+    postSQL: |-
+      MERGE INTO TARGET_DB.PRODUCTION.TARGET_CUSTOMERS AS TGT
+      USING SNAPSHOT_DB.STAGING.SNAPSHOT_CUSTOMERS AS SRC
+      ON TGT.CUSTOMER_ID = SRC.CUSTOMER_ID
+      WHEN MATCHED AND SRC.UPDATED_AT > TGT.UPDATED_AT THEN
+          UPDATE SET
+              TGT.NAME       = SRC.NAME,
+              TGT.EMAIL      = SRC.EMAIL,
+              TGT.STATUS     = SRC.STATUS,
+              TGT.UPDATED_AT = SRC.UPDATED_AT,
+              TGT.LOADED_AT  = CURRENT_TIMESTAMP()
+      WHEN NOT MATCHED THEN
+          INSERT (CUSTOMER_ID, NAME, EMAIL, STATUS, UPDATED_AT, LOADED_AT)
+          VALUES (SRC.CUSTOMER_ID, SRC.NAME, SRC.EMAIL, SRC.STATUS, SRC.UPDATED_AT, CURRENT_TIMESTAMP())
+    preSQL: ""
+    testsEnabled: true
+    truncateBefore: true
+  database: ""
+  deployEnabled: true
+  description: ""
+  isMultisource: false
+  locationName: SRC
+  materializationType: table
+  metadata:
+    appliedNodeTests:
+      - continueOnFailure: true
+        description: ""
+        name: Test
+        runOrder: After
+        templateString: "{{ testutils.expect_table_row_count_to_be_between(1, 10) }}"
+    columns:
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: e890721b-d63f-493f-b8c4-fbd6f8a6512e
+          stepCounter: 5e7e4257-6cc7-4d5c-af63-f8d5bae6d682
+        config: {}
+        dataType: NUMBER(38,0)
+        description: ""
+        name: CUSTOMER_ID
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: ea93848d-0e80-4b52-9679-58106df79d85
+                stepCounter: af54a02d-cbc5-4076-915c-05d385cf1c14
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 60816b85-2322-4de4-95b6-f68cf85370a4
+          stepCounter: 5e7e4257-6cc7-4d5c-af63-f8d5bae6d682
+        config: {}
+        dataType: VARCHAR(100)
+        description: ""
+        name: NAME
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 2cf49451-3193-4586-9a1c-3569e469a120
+                stepCounter: af54a02d-cbc5-4076-915c-05d385cf1c14
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: d01ffc71-211a-42ac-9eee-2241a8750309
+          stepCounter: 5e7e4257-6cc7-4d5c-af63-f8d5bae6d682
+        config: {}
+        dataType: VARCHAR(200)
+        description: ""
+        name: EMAIL
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 359f2ad0-ebc3-4a06-8ddf-914c0808e684
+                stepCounter: af54a02d-cbc5-4076-915c-05d385cf1c14
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 6d040687-8a23-4321-a98a-eae4d2ccca13
+          stepCounter: 5e7e4257-6cc7-4d5c-af63-f8d5bae6d682
+        config: {}
+        dataType: VARCHAR(20)
+        description: ""
+        name: STATUS
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 6f266297-bec3-4f06-b660-65d88348ba1e
+                stepCounter: af54a02d-cbc5-4076-915c-05d385cf1c14
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: df76e1ef-8b46-45c1-bbcc-984e03a56958
+          stepCounter: 5e7e4257-6cc7-4d5c-af63-f8d5bae6d682
+        config: {}
+        dataType: TIMESTAMP_NTZ(9)
+        description: ""
+        name: UPDATED_AT
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 60af68b5-13e4-4ee4-bab8-6b8595a22350
+                stepCounter: af54a02d-cbc5-4076-915c-05d385cf1c14
+            transform: ""
+    cteString: ""
+    description: ""
+    destinationName: ""
+    enabledColumnTestIDs: []
+    materializationOption: ""
+    sourceMapping:
+      - aliases:
+          SNAPSHOT_CUSTOMERS: af54a02d-cbc5-4076-915c-05d385cf1c14
+        customSQL:
+          customSQL: ""
+        dependencies:
+          - locationName: SRC
+            nodeName: SNAPSHOT_CUSTOMERS
+        join:
+          joinCondition: FROM {{ ref('SRC', 'SNAPSHOT_CUSTOMERS') }} "SNAPSHOT_CUSTOMERS"
+        name: STG_SNAPSHOT_CUSTOMERS
+        noLinkRefs: []
+  name: STG_SNAPSHOT_CUSTOMERS
+  overrideSQL: false
+  schema: ""
+  sqlType: Stage
+  type: sql
+  version: 1
+type: Node
