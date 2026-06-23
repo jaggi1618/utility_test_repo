@@ -4,7 +4,7 @@ config:
   packageVariables: ""
 fileVersion: 1
 id: "@coalesce/snowflake/test-utility"
-name: utility-test-package
+name: test-utility
 packageID: "@coalesce/snowflake/test-utility"
 releaseID: 6b6213ab-f2d6-4630-81ba-3cdef9f6ea8b
 type: Package
