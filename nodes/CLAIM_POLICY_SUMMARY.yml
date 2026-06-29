@@ -395,12 +395,12 @@ operation:
       - locationName: DA_TEST
         nodeName: DW_CLIENT_CURRENT
       join:
-        joinCondition: 'FROM {{ ref(''DBSHIFT'', ''AO_CLAIM'') }} AS C
+        joinCondition: 'FROM {{ ref(''DBSHIFT'', ''AO_CLAIM'') }} C
 
-          LEFT JOIN {{ ref(''DBSHIFT'', ''DW_POLICY_CURRENT'') }} AS P ON C.POLICY_NUMBER
+          LEFT JOIN {{ ref(''DBSHIFT'', ''DW_POLICY_CURRENT'') }} P ON C.POLICY_NUMBER
           = P.POLICY_NUMBER AND C.POLICY_EFFECTIVE_DATE = P.POLICY_EFFECTIVE_DATE
 
-          LEFT JOIN {{ ref(''DBSHIFT'', ''DW_CLIENT_CURRENT'') }} AS CL ON P.DW_CLIENT_ID
+          LEFT JOIN {{ ref(''DBSHIFT'', ''DW_CLIENT_CURRENT'') }} CL ON P.DW_CLIENT_ID
           = CL.DW_CLIENT_ID'
       name: CLAIM_POLICY_SUMMARY
       noLinkRefs: []
